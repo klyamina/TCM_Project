@@ -18,19 +18,18 @@ signals:
     void portOpened(QHostAddress IP,int port, bool opened, int freq); //сигнал с IP, портом +получилось открыть порт или нет
     void socketInfo (QHostAddress IP, int port, QString state); //состояние порта (выводить отдельно)
     void senderInfo(QHostAddress IP, int port);//сигнал с информацией об отправителе (из .conf файла)
-    void gansSenderInfo(QHostAddress IP, int port);//сигнал с информацией об отправителе ГАНС (из .conf файла)
     void errorInfo (QHostAddress IP, int port, QString error);
-    void diagnInfo(int packetsSended, int testPacketsSended, int packetsReceived, int packetsInvalid);
+    void diagnInfo(int packetsSended, int packetsReceived, int packetsInvalid);
     void info_Eth_collect(QString IPs, QString IPr, int senderPort, int receiverPort, int frequency, bool opened);
 
 private:
     QTimer *timer;
     QUdpSocket *sender;
     TCM2_protocol_in dataToSend;
-    QHostAddress senderIP, receiverIP, gansSenderIP;
-    int senderPort, receiverPort, gansSenderPort;
+    QHostAddress senderIP, receiverIP;
+    int senderPort, receiverPort;
     int frequency;
-    int packetsSended, packetsReceived, packetsInvalid, testPacketsSended;
+    int packetsSended, packetsReceived, packetsInvalid;
     bool opened;
 
 

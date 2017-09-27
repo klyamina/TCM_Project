@@ -22,18 +22,16 @@ int main(int argc, char *argv[])
 
     QObject::connect(&com_tcm, SIGNAL(portInfo(QString,int,bool)),
                      &console_control, SLOT(info_COM_collect(QString,int,bool)));
-    QObject::connect(&tcm_eth, SIGNAL(info_Eth_console(QString,QString,QString,int,int,int,int)),
-                     &console_control, SLOT(info_Eth_collect(QString,QString,QString,int,int,int,int)));
+    QObject::connect(&tcm_eth, SIGNAL(info_Eth_console(QString,QString,int,int,int)),
+                     &console_control, SLOT(info_Eth_collect(QString,QString,int,int,int)));
     QObject::connect(&tcm_eth, SIGNAL(portOpened(QHostAddress,int,bool,int)),
                      &console_control, SLOT(portOpened(QHostAddress,int,bool,int)));
     QObject::connect(&tcm_eth, SIGNAL(senderInfo(QHostAddress,int)),
                      &console_control, SLOT(senderInfo(QHostAddress,int)));
-    QObject::connect(&tcm_eth, SIGNAL(gansSenderInfo(QHostAddress,int)),
-                     &console_control, SLOT(gansSenderInfo(QHostAddress,int)));
     QObject::connect(&tcm_eth, SIGNAL(errorInfo(QHostAddress,int,QString)),
                      &console_control, SLOT(errorInfo(QHostAddress,int,QString)));
-    QObject::connect (&tcm_eth, SIGNAL(diagnInfo(int,int,int,int)),
-                     &console_control, SLOT(diagnInfo(int,int,int,int)));
+    QObject::connect (&tcm_eth, SIGNAL(diagnInfo(int,int,int)),
+                     &console_control, SLOT(diagnInfo(int,int,int)));
 
     QObject::connect(&time_write, SIGNAL(timeout()), &console_control, SLOT(infoCollect()));
 

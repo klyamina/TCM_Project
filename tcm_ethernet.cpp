@@ -21,7 +21,7 @@ TcmEthernet::TcmEthernet(const QString & config , const QString & name , QObject
     dataToSend.head.len=sizeof(dataToSend);
     dataToSend.head.type=2;
     dataToSend.head.start_byte[0]=173;
-    packetsSended=packetsReceived=packetsInvalid=testPacketsSended=0;
+    packetsSended=packetsReceived=packetsInvalid=0;
     opened=false;
 
     QPIConfig conf(config, QIODevice::ReadOnly);
@@ -31,17 +31,11 @@ TcmEthernet::TcmEthernet(const QString & config , const QString & name , QObject
     senderPort = e.getValue("sender.port", 0);
     receiverPort = e.getValue("receiver.port", 0);
     frequency = e.getValue("receiver.frequency", 20);
-    gansSenderIP=e.getValue("testSender.ip").value();
-    gansSenderPort=e.getValue("testSender.port", 0);
-
     qDebug()<<"senderIP"<<senderIP;
     qDebug()<<"receiverIP"<<receiverIP;
     qDebug()<<"senderPort"<<senderPort;
     qDebug()<<"receiverPort"<<receiverPort;
     qDebug()<<"frequency"<<frequency;
-    qDebug()<<"testSenderPort"<<gansSenderPort;
-    qDebug()<<"testSenderIP"<<gansSenderIP;
-
     connect(sender, SIGNAL(stateChanged(QAbstractSocket::SocketState)),SLOT(socketState(QAbstractSocket::SocketState)));
     connect(sender, SIGNAL(error(QAbstractSocket::SocketError)),SLOT(socketError(QAbstractSocket::SocketError)));
     connect(timer, SIGNAL(timeout()), SLOT(sendInfo()));
@@ -88,11 +82,7 @@ void TcmEthernet::writeData(){
     if (sender->writeDatagram((char *)&dataToSend,sizeof(dataToSend), senderIP, senderPort)) {
         packetsSended++;
     }
-    if (sender->writeDatagram((char *)&dataToSend,sizeof(dataToSend), gansSenderIP, gansSenderPort)) {
-        testPacketsSended++;
-    }
-
-    emit diagnInfo(packetsSended,testPacketsSended, packetsReceived, packetsInvalid);
+    emit diagnInfo(packetsSended, packetsReceived, packetsInvalid);
 //    qDebug()<<"Sended:"<<"Yaw="<<dataToSend.data.yaw<<"Pitch="<<dataToSend.data.pitch<<"Roll="<<dataToSend.data.roll;
 //    qDebug()<<"Mx="<<dataToSend.data.Mx<<"My"<<dataToSend.data.My<<"Mz"<<dataToSend.data.Mz;
 
@@ -129,7 +119,6 @@ void TcmEthernet::socketError(QAbstractSocket::SocketError socketError){
 void TcmEthernet::sendInfo(){
     emit portOpened(receiverIP, receiverPort, opened, frequency);
     emit senderInfo(senderIP, senderPort);
-    emit gansSenderInfo(gansSenderIP, gansSenderPort);
     emit errorInfo (receiverIP, receiverPort, sender->errorString());
-    emit diagnInfo(packetsSended, testPacketsSended, packetsReceived, packetsInvalid);
+    emit diagnInfo(packetsSended, packetsReceived, packetsInvalid);
 }
