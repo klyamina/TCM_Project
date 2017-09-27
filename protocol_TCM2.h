@@ -9,10 +9,10 @@
 #include <sys/time.h>
 #include <string.h>
 
-#pragma pack (push,4)
+#pragma pack (push,1)
 
 struct header {
-	unsigned char start_byte[4];
+    unsigned char start_byte[4];
 	unsigned int len;
 	unsigned int type;
 	unsigned int count;
@@ -26,9 +26,10 @@ struct TCM_Data {
     double Mx;
     double My;
     double Mz;
-    bool errorMagnOutOfRange;
-    bool errorInclOutOfRange;
-    bool errorMagnDistortion;
+    char errorMagnOutOfRange;
+    char errorInclOutOfRange;
+    char errorMagnDistortion;
+    char reserved;
     int packetsReceived;
     int packetsInvalid;
     int packetsSended;

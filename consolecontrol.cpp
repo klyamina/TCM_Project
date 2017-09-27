@@ -1,11 +1,18 @@
 #include "consolecontrol.h"
 #include <QDebug>
 #include <stdlib.h>
+#include "protocol_TCM2.h"
 
 ConsoleControl::ConsoleControl(QObject *parent) :
     QObject(parent) {
     packetsSended=count=0;
     COM_opened = false;
+    memset(&data_show,0,sizeof(data_show));
+    Eth_receiverIP.clear();
+    Eth_senderIP.clear();
+    GANS_senderIP.clear();
+    Eth_frequency=Eth_receiverPort=Eth_senderPort=0;
+    GANSPacketsSended=GANS_senderPort=0;
 }
 
 void ConsoleControl::infoCollect()

@@ -87,9 +87,9 @@ void serialPortTransmitter::testSend(){
     dataToSend->Mx=15;
     dataToSend->My=23;
     dataToSend->Mz=45;
-    dataToSend->errorInclOutOfRange=true;
-    dataToSend->errorMagnDistortion=false;
-    dataToSend->errorMagnOutOfRange=true;
+    dataToSend->errorInclOutOfRange=1;
+    dataToSend->errorMagnDistortion=0;
+    dataToSend->errorMagnOutOfRange=1;
     emit info_send_for_show(*dataToSend);
 }
 
@@ -211,12 +211,12 @@ void serialPortTransmitter::parsePacket( QVector <QVector < QVariant > > packetT
 
         if(packet.at(currentID)=='E'){
             //packet.at(currentID+3);
-            if (packet.at(currentID+3) & 0b00000001) dataToSend->errorMagnDistortion=true;
-            else dataToSend->errorMagnDistortion=false;
-            if (packet.at(currentID+3) & 0b00000010) dataToSend->errorInclOutOfRange=true;
-            else dataToSend->errorInclOutOfRange=false;
-            if (packet.at(currentID+3) & 0b00000100) dataToSend->errorMagnOutOfRange=true;
-            else dataToSend->errorMagnOutOfRange=false;
+            if (packet.at(currentID+3) & 0b00000001) dataToSend->errorMagnDistortion=1;
+            else dataToSend->errorMagnDistortion=0;
+            if (packet.at(currentID+3) & 0b00000010) dataToSend->errorInclOutOfRange=1;
+            else dataToSend->errorInclOutOfRange=0;
+            if (packet.at(currentID+3) & 0b00000100) dataToSend->errorMagnOutOfRange=1;
+            else dataToSend->errorMagnOutOfRange=0;
         }
         else if (currentID>=0 && nextID>=0 && currentID<nextID) {
             for(int j=currentID+1; j<nextID ;j++){
